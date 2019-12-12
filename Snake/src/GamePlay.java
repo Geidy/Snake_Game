@@ -27,7 +27,7 @@ public class GamePlay extends JPanel {
 		g.drawRect(24, 74, 851, 577);
 		
 		//Draw background for the gamePlay
-		g.setColor(Color.black);
+		g.setColor(Color.gray);
 		g.fillRect(25, 75, 850, 575);  //game area_last # snake will check
 		
 		
