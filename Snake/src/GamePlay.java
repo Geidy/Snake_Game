@@ -39,22 +39,22 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
-		//timer = new Timer(delay, this);
-		//timer.start();
+		// timer = new Timer(delay, this);
+		// timer.start();
 
 	}
 
 	public void paint(Graphics g) {
-		
-		if(moves == 0) {
+
+		if (moves == 0) {
 			snakexlength[2] = 50;
 			snakexlength[1] = 75;
 			snakexlength[0] = 100;
-			
+
 			snakeylength[2] = 100;
 			snakeylength[1] = 100;
-			snakeylength[0] =100;
-			
+			snakeylength[0] = 100;
+
 		}
 
 		// drawing border for title
@@ -103,13 +103,13 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
 			}
 			if (a != 0) {
-				
+
 				snakeImage = new ImageIcon("Assets/snakeimage.png");
 				snakeImage.paintIcon(this, g, snakexlength[a], snakeylength[a]);
 
 			}
 		}
-		
+
 		g.dispose();
 	}
 
@@ -128,15 +128,72 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			
+
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+
 			moves++; // snake move from starting position
 			right = true;
-			left = true;
+			if (!left) {
+
+				right = true;
+			} else {
+				right = false;
+				left = true;
+			}
+
 			up = false;
 			down = false;
 		}
+
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+
+			moves++; // snake move from starting position
+			left = true;
+			if (!right) {
+
+				left = true;
+			} else {
+				left = false;
+				right = true;
+			}
+
+			up = false;
+			down = false;
+		}
+		
+if(e.getKeyCode() == KeyEvent.VK_UP) {
+			
+			moves++; // snake move from starting position
+			up = true;
+			if(!down) {
+				
+				up = true;
+			}
+			else {
+				up = false;
+				down = true;
+			}
+			
+			right = false;
+			left = false;
+		}
+
+if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+	
+	moves++; // snake move from starting position
+	down = true;
+	if(!up) {
+		
+		down = true;
+	}
+	else {
+		up = false;
+		down = true;
+	}
+	
+	right = false;
+	left = false;
+}
 
 	}
 
