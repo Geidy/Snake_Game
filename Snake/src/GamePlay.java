@@ -1,9 +1,12 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
+
 //import java.util.Timer;
 import javax.swing.Timer;
 import javax.swing.ImageIcon;
@@ -11,7 +14,6 @@ import javax.swing.JPanel;
 
 public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
-	private int moves = 0;
 	private int[] snakexlength = new int[750];
 	private int[] snakeylength = new int[750];
 
@@ -29,8 +31,23 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
 	private Timer timer;
 	private int delay = 100; // Snake speed
-
 	private ImageIcon snakeImage;
+
+	private int[] enemyxpos = { 25, 50, 75, 100, 125, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500,
+			525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800, 825, 850 };
+
+	private int[] enemyypos = { 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550,
+			575, 600, 625 };
+
+	private ImageIcon enemyImage;
+	private Random random = new Random();
+
+	private int xpos = random.nextInt(34);
+	private int ypos = random.nextInt(23);
+
+	private int score = 0;
+
+	private int moves = 0;
 
 	private ImageIcon titleImage;
 
@@ -39,8 +56,8 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
-		 timer = new Timer(delay, this);
-		 timer.start();
+		timer = new Timer(delay, this);
+		timer.start();
 
 	}
 
@@ -72,6 +89,16 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 		// Draw background for the gamePlay
 		g.setColor(Color.gray);
 		g.fillRect(25, 75, 850, 575); // game area_last # snake will check
+
+		// Draw scores
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("arial", Font.PLAIN, 14));
+		g.drawString("Scores: " + score, 780, 30);
+
+		// Draw length
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("arial", Font.PLAIN, 14));
+		g.drawString("Length: " + lengthofsnake, 780, 50);
 
 		rightmouth = new ImageIcon("Assets/rightmouth.png");
 		rightmouth.paintIcon(this, g, snakexlength[0], snakeylength[0]);
@@ -109,6 +136,19 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 
 			}
 		}
+        
+		//collision double check
+		enemyImage = new ImageIcon("Assets/enemy.png");
+
+		if (enemyxpos[xpos] == snakexlength[0] && enemyypos[ypos] == snakeylength[0]) {
+			
+			score++;
+			lengthofsnake++;
+			xpos = random.nextInt(34);
+			ypos = random.nextInt(23);
+
+		}
+		enemyImage.paintIcon(this, g, enemyxpos[xpos], enemyypos[ypos]);
 
 		g.dispose();
 	}
@@ -117,88 +157,85 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		timer.start();
-		if(right) {			
-			for(int r = lengthofsnake-1; r >= 0; r--) {
-				snakeylength[r+1] = snakeylength[r];
-					
+		if (right) {
+			for (int r = lengthofsnake - 1; r >= 0; r--) {
+				snakeylength[r + 1] = snakeylength[r];
+
 			}
-			
-			for(int r = lengthofsnake; r >= 0; r--) {				
-				if( r == 0) {
+
+			for (int r = lengthofsnake; r >= 0; r--) {
+				if (r == 0) {
 					snakexlength[r] = snakexlength[r] + 25;
 				} else {
-					snakexlength[r] = snakexlength[r-1];
+					snakexlength[r] = snakexlength[r - 1];
 				}
-				if(snakexlength[r] > 850) {
+				if (snakexlength[r] > 850) {
 					snakexlength[r] = 25;
 				}
 			}
-			
+
 			repaint();
-			
+
 		}
-		if(left) {
-			for(int r = lengthofsnake-1; r >= 0; r--) {
-				snakeylength[r+1] = snakeylength[r];
-					
+		if (left) {
+			for (int r = lengthofsnake - 1; r >= 0; r--) {
+				snakeylength[r + 1] = snakeylength[r];
+
 			}
-			
-			for(int r = lengthofsnake; r >= 0; r--) {				
-				if( r == 0) {
+
+			for (int r = lengthofsnake; r >= 0; r--) {
+				if (r == 0) {
 					snakexlength[r] = snakexlength[r] - 25;
 				} else {
-					snakexlength[r] = snakexlength[r-1];
+					snakexlength[r] = snakexlength[r - 1];
 				}
-				if(snakexlength[r] < 25) {
+				if (snakexlength[r] < 25) {
 					snakexlength[r] = 850;
 				}
 			}
-			
+
 			repaint();
-			
-			
+
 		}
-		if(up) {
-			for(int r = lengthofsnake-1; r >= 0; r--) {
-				snakexlength[r+1] = snakexlength[r];
-					
+		if (up) {
+			for (int r = lengthofsnake - 1; r >= 0; r--) {
+				snakexlength[r + 1] = snakexlength[r];
+
 			}
-			
-			for(int r = lengthofsnake; r >= 0; r--) {				
-				if( r == 0) {
+
+			for (int r = lengthofsnake; r >= 0; r--) {
+				if (r == 0) {
 					snakeylength[r] = snakeylength[r] - 25;
 				} else {
-					snakeylength[r] = snakeylength[r-1];
+					snakeylength[r] = snakeylength[r - 1];
 				}
-				if(snakeylength[r] < 75) {
+				if (snakeylength[r] < 75) {
 					snakeylength[r] = 625;
 				}
 			}
-			
+
 			repaint();
-			
-			
+
 		}
-		if(down) {
-			for(int r = lengthofsnake-1; r >= 0; r--) {
-				snakexlength[r+1] = snakexlength[r];
-					
+		if (down) {
+			for (int r = lengthofsnake - 1; r >= 0; r--) {
+				snakexlength[r + 1] = snakexlength[r];
+
 			}
-			
-			for(int r = lengthofsnake; r >= 0; r--) {				
-				if( r == 0) {
+
+			for (int r = lengthofsnake; r >= 0; r--) {
+				if (r == 0) {
 					snakeylength[r] = snakeylength[r] + 25;
 				} else {
-					snakeylength[r] = snakeylength[r-1];
+					snakeylength[r] = snakeylength[r - 1];
 				}
-				if(snakeylength[r] > 625) {
+				if (snakeylength[r] > 625) {
 					snakeylength[r] = 75;
 				}
 			}
-			
+
 			repaint();
-			
-			
+
 		}
 
 	}
@@ -244,40 +281,38 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 			up = false;
 			down = false;
 		}
-		
-if(e.getKeyCode() == KeyEvent.VK_UP) {
-			
+
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+
 			moves++; // snake move from starting position
 			up = true;
-			if(!down) {
-				
+			if (!down) {
+
 				up = true;
-			}
-			else {
+			} else {
 				up = false;
 				down = true;
 			}
-			
+
 			right = false;
 			left = false;
 		}
 
-if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-	
-	moves++; // snake move from starting position
-	down = true;
-	if(!up) {
-		
-		down = true;
-	}
-	else {
-		up = false;
-		down = true;
-	}
-	
-	right = false;
-	left = false;
-}
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+
+			moves++; // snake move from starting position
+			down = true;
+			if (!up) {
+
+				down = true;
+			} else {
+				up = false;
+				down = true;
+			}
+
+			right = false;
+			left = false;
+		}
 
 	}
 
