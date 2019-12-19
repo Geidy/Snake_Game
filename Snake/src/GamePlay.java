@@ -26,7 +26,8 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 	private ImageIcon leftmouth;
 	private ImageIcon upmouth;
 	private ImageIcon downmouth;
-
+	
+	//snake length when starting
 	private int lengthofsnake = 3;
 
 	private Timer timer;
@@ -137,13 +138,13 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 			}
 		}
         
-		//collision double check
+		//collision with enemy
 		enemyImage = new ImageIcon("Assets/enemy.png");
 
 		if (enemyxpos[xpos] == snakexlength[0] && enemyypos[ypos] == snakeylength[0]) {
 			
 			score++;
-			lengthofsnake++;
+			lengthofsnake +=2;
 			xpos = random.nextInt(34);
 			ypos = random.nextInt(23);
 
@@ -158,7 +159,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
 				up = false;
 				down = false;
 				
-				//change backg for game over
+				//change background for game over
 				g.setColor(Color.white);
 				g.setFont(new Font("arial", Font.BOLD, 50));
 				g.drawString("Game Over", 300, 300);
